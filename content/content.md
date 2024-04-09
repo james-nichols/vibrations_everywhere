@@ -1,54 +1,76 @@
 ---
 languageName: "English"
-title: "An Interactive Introduction to Fourier Transforms"
+title: "Vibrations Everywhere - The Maths of Waves"
 description: "Fourier transforms are a tool used in a whole bunch of different things. This is a explanation of what a Fourier transform does, and some different ways it can be useful."
 outFileName: "index.html"
 ---
 
-Fourier transforms are a tool used in a whole bunch of different things. This is an explanation of what a Fourier transform does, and some different ways it can be useful. And how you can make pretty things with it, like this thing:
+Many things in our world can be thought of as a bunch of waves put together. We're going to have a look at sound and images and how to break them up in to waves of different frequencies.
 
-<canvas id="self-draw" class="sketch" width=500 height=500></canvas>
+We're going to leave the mathematics and equations out of it for now. We will look at that more in the second half.
 
-I'm going to explain how that animation works, and along the way explain Fourier transforms!
+# Sound is waves of pressure
 
-By the end you should have a good idea about
-- What a Fourier transform does
-- Some practical uses of Fourier transforms
-- Some pointless but cool uses of Fourier transforms
-
-We're going to leave the mathematics and equations out of it for now. There's a bunch of interesting maths behind it, but it's better to start with what it actually does, and why you'd want to use it first. If you want to know more about the how, there's some further reading suggestions below!
-
-## So what is this thing?
-
-Put simply, the Fourier transform is a way of splitting something up into a bunch of sine waves. As usual, the name comes from some person who lived a long time ago called Fourier.
-
-Let’s start with some simple examples and work our way up. First up we're going to look at waves - patterns that repeat over time.
-
-Here’s an example wave:
-
+Waves of pressure travel through the air. Everything you hear is a pressure wave that reached your ear. Things that vibrate, like loudspeakers, create pressure waves.
+<div class="img-component-container">
+<img src="img/acoustics-piston-wave-animation.gif" width="500"/>
+</div>
+The pressure waves radiate outwards from a sound source, for example this bell.
+<div class="img-component-container">
+<img src="img/acoustics-sound-propagation-2d.png" width="500"/>
+</div>
+In today's session we are going to think about sound as the graph of the pressure value over time. (i.e. we think of the pressure as a mathematical _function_ against time)
+<div class="img-component-container">
+<img src="img/acoustics-time-domain-waveform.png" width="500"/>
+</div>
+Lets listen to a simple example of a sound wave given by the function animated below. It's a squiggly line that repeats forever (at least notionally). We say that this function is _periodic_.
 <canvas id="combo-sine-wave" class="sketch" width=500 height=300></canvas>
+<button id="together-button" class="button">Play Full Wave</button>
 
-This wavy pattern here can be split up into sine waves. That is, when we add up the two sine waves we get back the original wave.
+# Breaking up sound in to fundamental frequencies
+
+The squiggly pattern above here can be split up into two fundamental waves of different frequency. When we add up the two we get back the original wave.
 
 <canvas id="combo-sine-wave-split" class="sketch" width=500 height=500></canvas>
 
-The Fourier transform is a way for us to take the combined wave, and get each of the sine waves back out. In this example, you can almost do it in your head, just by looking at the original wave.
-
-Why? Turns out a lot of things in the real world interact based on these sine waves. We usually call them the wave's frequencies.
-
-The most obvious example is sound – when we hear a sound, we don’t hear that squiggly line, but we hear the different frequencies of the sine waves that make up the sound.
-
-<button id="together-button" class="button">Play Full Wave</button>
+We can listen to each of those freqencies by themselves. You can hear how the original sound is indeed a mix of these two frequencies.
 
 <button id="split-button-1" class="button">Play High Frequency</button>
 
 <button id="split-button-2" class="button">Play Low Frequency</button>
 
+### What are these _"fundamental waves"?_ 
+
+They are _sinusoids_, as in the sine and cosine functions that you might remember from trigonometry.
+<div class="img-component-container">
+<img src="img/sinusoidal.png" width="400"/>
+</div>
+Sinusoids are considered the most basic wave as many physical systems oscillate in a sinusoidal manner, e.g. 
+ - a spring with a weight attached to it
+ - a pendulum
+
+There is also mathematically deep theory justifying the choice of sinusoids.
+
+# The Fourier transform
+
+The _Fourier transform_ is the method to take any signal or function and decompose it in to the appropriate amount of sine and cosine waves of every frequency.
+
+It's a bit like guessing the recipe of a fruit juice or _smoothie_ - how much orange juice, mango juice, and ginger went in to this drink? 
+<div class="img-component-container">
+<img src="img/vicuschka_shutterstock.webp" width="500"/>
+</div>
+
+The Fourier transform is a way for us to take the combined wave, and get each of the composite sine and cosine waves back out. 
+
+Our ears naturally do some sort of Fourier transform: we don’t hear that squiggly line, but we hear the different frequencies of the sine waves that make up the sound.
+
 Being able to split them up on a computer can give us an understanding of what a person actually hears. We can understand how high or low a sound is, or figure out what note it is.
+
+# Another example
 
 We can also use this process on waves that don't look like they're made of sine waves.
 
-Let's take a look at this guy. It’s called a square wave.
+Let's take a look at this one. It’s called a square wave.
 
 <canvas id="square-wave" class="sketch" width=500 height=300></canvas>
 
@@ -65,9 +87,11 @@ We need a lot of them this time – technically an infinite amount to perfectly 
 
 *Drag the slider above to play with how many sine waves there are.*
 
-Visually, you'll notice that actually the first few sine waves are the ones that make the biggest difference. With the slider halfway, we have the general shape of the wave, but it's all wiggly. We just need the rest of the small ones to make the wigglyness flatten out.
+Some intersting things to note:
 
-When you listen to the wave, you'll hear the sound get lower, because we're removing the higher frequencies.
+ - The first few sine waves are the ones that make the biggest difference. 
+ - With the slider halfway, we have the general shape of the wave, but it's all wiggly. We need the rest of the small ones to make the wigglyness flatten out.
+ - When you listen to the wave, you'll hear the sound get lower, because we're removing the higher frequencies.
 
 This process works like that for any repeating line. Give it a go, try drawing your own!
 
@@ -83,98 +107,44 @@ This process works like that for any repeating line. Give it a go, try drawing y
 
 *Move the slider to see how as we add more sine waves, it gets closer and closer to your drawing*
 
-Again, aside from the extra wigglyness, the wave looks pretty similar with just half of the sine waves.
+_By using a Fourier transform, we can get the important parts of a sound, and only store those to end up with something that's pretty close to the original sound._ 
 
-We can actually use the fact that the wave is pretty similar to our advantage. By using a Fourier transform, we can get the important parts of a sound, and only store those to end up with something that's pretty close to the original sound.
+# Sound on a computer
 
-Normally on a computer we store a wave as a series of points.
+Normally on a computer we store a sound as a series of numbers, each representing the signal intensity at a regular time point.
 
 <canvas id="wave-samples" class="sketch" width=500 height=500></canvas>
 
-What we can do instead is represent it as a bunch of sine waves. Then we can compress the sound by ignoring the smaller frequencies. Our end result won't be the same, but it'll sound pretty similar to a person.
+However, we can also _store the Fourier transform_ of a sound and perfectly reconstruct the sound from it. _A bit like storing the recipe for a smoothie and being able to make it any time._
+
+What if we can compress the sound by ignoring the smaller frequencies? Our end result won't be the same, but it'll sound pretty similar.
 
 <canvas id="wave-frequencies" class="sketch" width=500 height=500></canvas>
 
 This is essentially what MP3s do, except they're more clever about which frequencies they keep and which ones they throw away.
 
-So in this case, we can use Fourier transforms to get an understanding of the fundamental properties of a wave, and then we can use that for things like compression.
+# Images and waves
 
-Ok, now let's dig more into the Fourier transform. This next part looks cool, but also gives you a bit more understanding of what the Fourier transform does. But mostly looks cool.
+Did you know Fourier transforms can also be used on images? We use it all the time, because that's how JPEGs work! 
 
-## Epicycles
+Now we're dealing with images, we need so we need 2-dimensional sinusoidal waves. 
+Instead of a wave that's a line, we now have images with black and white sections.
 
-Now at the start, I said it splits things into sine waves. The thing is, the sine waves it creates are not just regular sine waves, but they’re 3D. You could call them "complex sinusoids". Or just "spirals".
+No matter what image we have, we must be able add up a bunch of these sine waves to get back to our original image.
 
-<canvas id="complex-sinusoid" class="sketch" width=500 height=500></canvas>
+_Let's start with black-and-white images for now._
 
-If we take a look from the side, they look like sine waves. From front on, though, these look like circles.
-
-<canvas id="complex-sinusoid-turn" class="sketch" width=500 height=500></canvas>
-
-So far everything we’ve been doing has only required the regular 2D sine waves. When we do a Fourier transform on 2D waves, the complex parts cancel out so we just end up with sine waves.
-
-But we can use the 3D sine waves to make something fun looking like this:
-
-<canvas id="peace-epicycles" class="sketch" width=500 height=500></canvas>
-
-What’s going on here?
-
-Well, we can think of the drawing as a 3D shape because of the way it moves around in time. If you imagine the hand being drawn by a person, the three dimensions represent where the tip of their pencil is at that moment. The x and y dimensions tell us the position, and then the time dimension is the time at that moment.
-
-<canvas id="peace-3d" class="sketch" width=500 height=500></canvas>
-
-Now that we have a 3D pattern, we can't use the regular 2D sine waves to represent it. No matter how many of the 2D sine waves we add up, we'll never get something 3D. So we need something else.
-
-What we can use is the 3D spiral sine waves from before. If we add up lots of those, we can get something that looks like our 3D pattern.
-
-Remember, these waves look like circles when we look at them from front on. The name for the pattern of a circle moving around another circle is an epicycle.
-
-<canvas id="peace-build-up" class="sketch" width=500 height=500></canvas>
-<input id="peace-build-up-slider" type="range" min="0" max="1" value="1" step="any">
-
-*Use the slider above to control how many circles there are.*
-
-Like before, we get a pretty good approximation of our pattern with just a few circles. Because this is a fairly simple shape, all the last ones do is make the edges a little sharper.
-
-All this applies to any drawing, really! Now it’s your chance to play around with it.
-
-<div class="multi-container">
-<div class="sketch" >
-    <canvas id="draw-zone" class="sketch-child" width=500 height=500></canvas>
-    <p id="draw-zone-instruction" class="instruction">Draw here!</p>
-    <button id="draw-zone-undo-button" class="button embedded-button">Undo</button>
-</div>
-<canvas id="circle-zone" class="sketch" width=500 height=500></canvas>
-</div>
-<input id="circle-zone-slider" type="range" min="0" max="1" value="1" step="any">
-
-*Use the slider to control how many circles are used for your drawing*
-
-Again, you'll see for most shapes, we can approximate them fairly well with just a small number of circles, instead of saving all the points.
-
-Can we use this for real data? Well, we could! In reality we have another data format called SVG, which probably does a better job for the types of shapes we tend to create. So for the moment, this is really just for making cool little gifs.
-
-<canvas id="fourier-title" class="sketch" width=500 height=300></canvas>
-
-There is another type of visual data that does use Fourier transforms, however.
-
-## JPEGs
-
-Did you know Fourier transforms can also be used on images? In fact, we use it all the time, because that's how JPEGs work! We're applying the same principles to images – splitting up something into a bunch of sine waves, and then only storing the important ones.
-
-Now we're dealing with images, we need a different type of sine wave. We need to have something that no matter what image we have, we can add up a bunch of these sine waves to get back to our original image.
-
-To do that, each of our sine waves will be images too. Instead of a wave that's a line, we now have images with black and white sections. To represent the size of a wave, each image will have more or less contrast.
-
-We can also use these to represent color in the same way, but let's start with black-and-white images for now. To represent colorless images, we need some horizontal wave images,
+### We need some horizontal wave images
 
 <img id="img-y-component" src="img/components-4-0.png" class="sketch sketch-small">
 
-Along with some vertical wave images.
+### Along with some vertical wave images.
 
 <img id="img-x-component" src="img/components-0-4.png" class="sketch sketch-small">
 
-By themselves, just horizontal and vertical images aren't enough to represent the types of images we get. We also need some extra ones that you get by multiplying the two together.
+By themselves, just horizontal and vertical images aren't enough to represent the types of images we get...
+
+### We also need some extra ones that you get by multiplying the two together.
 
 <div class="multi-container">
 <img id="img-mult-x-component" src="img/components-0-4.png" class="sketch sketch-mult">
@@ -253,7 +223,7 @@ For an 8x8 image, here are all the images we need.
     <img src="img/components-7-7.png" class="img-component">
 </div>
 
-If we take the images, adjust their contrast to the right amount, and then add them up we can create any image.
+If we take these images, adjust their contrast to the right amount, and then add them up we can create any image.
 
 Let's start with this letter 'A'. It's pretty small, but we need it to be small otherwise we'll end up with too many other images.
 
@@ -397,9 +367,9 @@ As we add more and more of these images, we end up with something that becomes c
 </div>
 </div>
 
-For actual JPEG images there are just a few extra details.
+# JPEG compression
 
-The image gets broken up into 8x8 chunks, and each chunk gets split up separately. We use a set of frequencies to determine how light or dark each pixel is, and then another two sets for the color, one for red-green, and another for blue-yellow. The number of frequencies that we use for each chunk determines the quality of the JPEG.
+In JPEG the image gets broken up into 8x8 chunks, and we take the Fourier transform of each chunk. The number of frequencies that we use for each chunk determines the quality of the JPEG.
 
 Here's a real JPEG image, zoomed in so we can see the details. When we play with the quality levels we can see this process happen.
 
@@ -409,14 +379,13 @@ Here's a real JPEG image, zoomed in so we can see the details. When we play with
 
 ## Conclusion
 
-So let's recap:
+Recap:
 
 - Fourier transforms are things that let us take something and split it up into its frequencies.
 - The frequencies tell us about some fundamental properties of the data we have
 - And can compress data by only storing the important frequencies
-- And we can also use them to make cool looking animations with a bunch of circles
 
-This is just scratching the surface into some applications. The Fourier transform is an extremely powerful tool, because splitting things up into frequencies is so fundamental. They're used in a lot of fields, including circuit design, mobile phone signals, magnetic resonance imaging (MRI), and quantum physics!
+This is just scratching the surface. The Fourier transform is an extremely powerful tool, and is used in a lot of fields including _circuit design, mobile phone signals, magnetic resonance imaging (MRI), and quantum physics_.
 
 ## Questions for the curious
 
@@ -437,18 +406,6 @@ A great article that digs more into the mathematics of what happens.
 [But what is the Fourier Transform? A visual introduction.](https://www.youtube.com/watch?v=spUNpyF58BY)
 A great Youtube video by 3Blue1Brown, also explaining the maths of Fourier transforms from an audio perspective.
 
-[A Tale of Math & Art: Creating the Fourier Series Harmonic Circles Visualization](https://alex.miller.im/posts/fourier-series-spinning-circles-visualization/)
-Another article explaining how you can use epicycles to draw a path, explained from a linear algebra perspective.
-
 [Fourier transform (Wikipedia)](https://en.wikipedia.org/wiki/Fourier_transform)
 And of course, the Wikipedia article is pretty good too.
 
-## The author
-
-<canvas id="its-meee" class="sketch" width=500 height=500></canvas>
-
-I'm Jez! Full time I work at a [search company](https://www.google.com/) in the Bay Area, and in my spare time I like making games and interactive code things like this!
-
-This webpage is open-source, you can check out the code on [GitHub](https://github.com/Jezzamonn/fourier)! If you have any feedback or want to ask any questions, feel free to email me at <span id="email-text">fourier [at] jezzamon [dot] com</span>, or shoot me a tweet on [Twitter](https://twitter.com/jezzamonn).
-
-If you want to see more of my work, check out my [homepage](/), and if you want to see what I'm making next, you can follow my Twitter account, [@jezzamonn](https://twitter.com/jezzamonn)!

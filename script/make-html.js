@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const defaultPageData = {
-    author: 'Jez Swanson',
+    author: 'with James Nichols',
     translatorMarkdown: '',
     textDirection: '',
 };
